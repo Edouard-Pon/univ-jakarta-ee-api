@@ -26,7 +26,7 @@ public class DishRepositoryMongodb implements DishRepositoryInterface {
             prop.load(input);
             mongoClient = MongoClients.create(prop.getProperty("mongodb.url"));
             database = mongoClient.getDatabase(prop.getProperty("mongodb.database"));
-            collection = database.getCollection(prop.getProperty("mongodb.collection"));
+            collection = database.getCollection(prop.getProperty("mongodb.collection.dishes"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
