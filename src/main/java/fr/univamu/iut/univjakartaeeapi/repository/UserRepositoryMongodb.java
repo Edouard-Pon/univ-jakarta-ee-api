@@ -6,31 +6,27 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import fr.univamu.iut.univjakartaeeapi.model.UserRole;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.bson.Document;
 import fr.univamu.iut.univjakartaeeapi.model.User;
 import org.bson.types.ObjectId;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
+
+@ApplicationScoped
 public class UserRepositoryMongodb implements UserRepositoryInterface {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> collection;
 
-    public UserRepositoryMongodb() {
-        Properties prop = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            prop.load(input);
-            mongoClient = MongoClients.create(prop.getProperty("mongodb.url"));
-            database = mongoClient.getDatabase(prop.getProperty("mongodb.database"));
-            collection = database.getCollection(prop.getProperty("mongodb.collection.users"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    @Inject
+    public UserRepositoryMongodb(MongoClient mongoClient, MongoDatabase database) {
+        this.mongoClient = mongoClient;
+        this.database = database;
+        this.collection = database.getCollection("users");
     }
 
     @Override
@@ -57,7 +53,8 @@ public class UserRepositoryMongodb implements UserRepositoryInterface {
     @Override
     public boolean addUser(String username, String password) {
         Document doc = new Document("username", username)
-            .append("password", password);
+            .append("password", password)
+            .append("role", UserRole.SUBSCRIBER.toString()); // default role
         return collection.insertOne(doc).wasAcknowledged();
     }
 

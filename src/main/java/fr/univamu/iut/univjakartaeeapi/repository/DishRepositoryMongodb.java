@@ -5,31 +5,26 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.bson.Document;
 import fr.univamu.iut.univjakartaeeapi.model.Dish;
 import org.bson.types.ObjectId;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
+@ApplicationScoped
 public class DishRepositoryMongodb implements DishRepositoryInterface {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> collection;
 
-    public DishRepositoryMongodb() {
-        Properties prop = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            prop.load(input);
-            mongoClient = MongoClients.create(prop.getProperty("mongodb.url"));
-            database = mongoClient.getDatabase(prop.getProperty("mongodb.database"));
-            collection = database.getCollection(prop.getProperty("mongodb.collection.dishes"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    @Inject
+    public DishRepositoryMongodb(MongoClient mongoClient, MongoDatabase database) {
+        this.mongoClient = mongoClient;
+        this.database = database;
+        this.collection = database.getCollection("dishes");
     }
 
     @Override
