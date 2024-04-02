@@ -1,5 +1,6 @@
 package fr.univamu.iut.univjakartaeeapi.resource;
 
+import fr.univamu.iut.univjakartaeeapi.annotation.NoJWTFilter;
 import fr.univamu.iut.univjakartaeeapi.repository.UserRepositoryInterface;
 import fr.univamu.iut.univjakartaeeapi.service.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,12 +25,14 @@ public class UserResource {
     }
 
     @GET
+    @NoJWTFilter
     @Produces("application/json")
     public String getAllUsers() {
         return service.getAllUsersJSON();
     }
 
     @GET
+    @NoJWTFilter
     @Path("{id}")
     @Produces("application/json")
     public String getUser(@PathParam("id") String id){
@@ -39,6 +42,7 @@ public class UserResource {
     }
 
     @POST
+    @NoJWTFilter
     @Consumes("application/x-www-form-urlencoded")
     public Response addUser(@FormParam("username") String name, @FormParam("password") String password) {
         if (service.addUser(name, password))

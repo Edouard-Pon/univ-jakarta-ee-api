@@ -1,5 +1,7 @@
 package fr.univamu.iut.univjakartaeeapi.resource;
 
+import fr.univamu.iut.univjakartaeeapi.annotation.AdminOnly;
+import fr.univamu.iut.univjakartaeeapi.annotation.NoJWTFilter;
 import fr.univamu.iut.univjakartaeeapi.repository.DishRepositoryInterface;
 import fr.univamu.iut.univjakartaeeapi.service.DishService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,12 +26,14 @@ public class DishResource {
     }
 
     @GET
+    @NoJWTFilter
     @Produces("application/json")
     public String getAllDishes() {
         return service.getAllDishesJSON();
     }
 
     @GET
+    @NoJWTFilter
     @Path("{id}")
     @Produces("application/json")
     public String getDish(@PathParam("id") String id) {
@@ -39,6 +43,7 @@ public class DishResource {
     }
 
     @POST
+    @AdminOnly
     @Consumes("application/x-www-form-urlencoded")
     public Response addDish(@FormParam("name") String name, @FormParam("description") String description, @FormParam("price") double price) {
         if (service.addDish(name, description, price))
@@ -49,6 +54,7 @@ public class DishResource {
 
     @PUT
     @Path("{id}")
+    @AdminOnly
     @Consumes("application/x-www-form-urlencoded")
     public Response updateDish(@PathParam("id") String id, @FormParam("name") String name, @FormParam("description") String description, @FormParam("price") double price) {
         if (service.updateDish(id, name, description, price))
@@ -59,6 +65,7 @@ public class DishResource {
 
     @DELETE
     @Path("{id}")
+    @AdminOnly
     public Response deleteDish(@PathParam("id") String id) {
         if (service.deleteDish(id))
             return Response.ok("deleted").build();
