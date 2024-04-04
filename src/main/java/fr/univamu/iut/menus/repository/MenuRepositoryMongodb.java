@@ -5,14 +5,18 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import fr.univamu.iut.menus.model.Dish;
+import fr.univamu.iut.menus.model.DishData;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import fr.univamu.iut.menus.model.Menu;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class MenuRepositoryMongodb implements MenuRepositoryInterface {
@@ -51,15 +55,22 @@ public class MenuRepositoryMongodb implements MenuRepositoryInterface {
     @Override
     public boolean updateMenu(String id, String userId, String description, double price) {
         Document doc = new Document("_id", new ObjectId(id))
-                .append("userId", userId)
-                .append("description", description)
-                .append("price", price);
+                .append("userId", userId);
         return collection.replaceOne(Filters.eq("_id", new ObjectId(id)), doc).wasAcknowledged();
     }
 
     @Override
-    public boolean addMenu(String userId) {
-        Document doc = new Document("userId", userId);
+    public boolean addMenu(String userId, ArrayList<DishData> dishesData) {
+        List<Document> dishes = new ArrayList<>();
+        for (DishData dishData : dishesData) {
+            dishes.add(new Document("dishId", new ObjectId(dishData.getDishId()))
+                    .append("quantity", dishData.getQuantity()));
+        }
+
+        Document doc = new Document("userId", new ObjectId(userId))
+                .append("creationDate", LocalDateTime.now().toString())
+                .append("updateDate", LocalDateTime.now().toString())
+                .append("dishes", dishes);
         return collection.insertOne(doc).wasAcknowledged();
     }
 
@@ -72,24 +83,34 @@ public class MenuRepositoryMongodb implements MenuRepositoryInterface {
         // Get the list of Dish documents from the document
         List<Document> dishDocs = (List<Document>) doc.get("dishes");
 
-        // Create a new list to hold the Dish objects
-        ArrayList<Dish> dishes = new ArrayList<>();
+        // Check if dishDocs is null and initialize it to an empty list if it is
+        if (dishDocs == null) {
+            dishDocs = new ArrayList<>();
+        }
 
-        // Convert each Dish document into a Dish object and add it to the list
+        // Create a new list to hold the Dish objects
+        ArrayList<Map<String, Object>> dishes = new ArrayList<>();
+
+        // Convert each Dish document into a Map and add it to the list
         for (Document dishDoc : dishDocs) {
-            Dish dish = new Dish(
-                    dishDoc.getString("_id"),
-                    dishDoc.getString("name"),
-                    dishDoc.getString("description"),
-                    dishDoc.getDouble("price")
-            );
+            Map<String, Object> dish = new HashMap<>();
+            String dishId = dishDoc.getObjectId("_id").toString();
+            Integer quantity = dishDoc.getInteger("quantity");
+
+            // Call the second API to get the full dish data by dishId
+//            Dish fullDishData = getDishById(dishId);
+            Dish fullDishData = null;
+
+            // Add the full dish data and quantity to the dish map
+            dish.put("dishData", fullDishData);
+            dish.put("quantity", quantity);
             dishes.add(dish);
         }
 
         // Create a new Menu object using the converted dishes
         return new Menu(
                 doc.getObjectId("_id").toString(),
-                doc.getString("userId"),
+                doc.getObjectId("userId").toString(),
                 doc.getString("creationDate"),
                 doc.getString("updateDate"),
                 dishes

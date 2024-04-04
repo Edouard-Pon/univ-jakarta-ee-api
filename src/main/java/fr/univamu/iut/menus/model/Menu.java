@@ -2,22 +2,23 @@ package fr.univamu.iut.menus.model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Menu {
     protected String id;
     protected String userId;
     protected String creationDate;
     protected String updateDate;
-    protected ArrayList<Dish> dishes;
+    protected ArrayList<Map<String, Object>> dishes;
 
     public Menu() {}
 
-    public Menu(String id, String userId, String creationDate, String updateDate, ArrayList<Dish> dishes) {
+    public Menu(String id, String userId, String creationDate, String updateDate, ArrayList<Map<String, Object>> dishes) {
         this.id = id;
         this.userId = userId;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
-        this.dishes = new ArrayList<Dish>();
+        this.dishes = dishes;
     }
 
     public String getId() {
@@ -52,20 +53,19 @@ public class Menu {
         this.updateDate = updateDate;
     }
 
-    public ArrayList<Dish> getDishes() {
+    public ArrayList<Map<String, Object>> getDishes() {
         return dishes;
     }
 
-    public void setDishes(ArrayList<Dish> dishes) {
+    public void setDishes(ArrayList<Map<String, Object>> dishes) {
         this.dishes = dishes;
     }
 
-    public void addDish(Dish dish) {
-        this.dishes.add(dish);
+    public void addDish(Dish dish, int quantity) {
+
     }
 
     public void removeDish(Dish dish) {
-        this.dishes.remove(dish);
     }
 
     @Override
