@@ -1,10 +1,12 @@
 package fr.univamu.iut.menus.resource;
 
+import fr.univamu.iut.menus.model.MenuInput;
 import fr.univamu.iut.menus.repository.MenuRepositoryInterface;
 import fr.univamu.iut.menus.service.MenuService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/menus")
@@ -38,9 +40,9 @@ public class MenuResource {
     }
 
     @POST
-    @Consumes("application/x-www-form-urlencoded")
-    public Response addMenu(@FormParam("name") String name, @FormParam("description") String description, @FormParam("price") double price) {
-        if (service.addMenu(name, description, price))
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addMenu(MenuInput menuInput) {
+        if (service.addMenu(menuInput.getUserId(), menuInput.getDishes()))
             return Response.ok("added").build();
         else
             return Response.status(Response.Status.CONFLICT).build();

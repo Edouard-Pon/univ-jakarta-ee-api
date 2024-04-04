@@ -1,8 +1,13 @@
 package fr.univamu.iut.menus.service;
 
 import com.google.gson.Gson;
+import fr.univamu.iut.menus.model.DishData;
 import fr.univamu.iut.menus.model.Menu;
 import fr.univamu.iut.menus.repository.MenuRepositoryInterface;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MenuService {
     protected MenuRepositoryInterface menuRepo;
@@ -22,8 +27,8 @@ public class MenuService {
         return menu == null ? null : gson.toJson(menu);
     }
 
-    public boolean addMenu(String userId, String description, double price) {
-        return menuRepo.addMenu(userId);
+    public boolean addMenu(String userId, ArrayList<DishData> dishesData) {
+        return menuRepo.addMenu(userId, dishesData);
     }
 
     public boolean updateMenu(String id, String userId, String description, double price) {
