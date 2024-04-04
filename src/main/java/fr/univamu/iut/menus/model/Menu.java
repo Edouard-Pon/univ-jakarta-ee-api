@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 public class Menu {
     protected String id;
-    protected User user;
+    protected String userId;
     protected String creationDate;
     protected String updateDate;
     protected ArrayList<Dish> dishes;
 
     public Menu() {}
 
-    public Menu(String id, User user, String creationDate, String updateDate, ArrayList<Dish> dishes) {
+    public Menu(String id, String userId, String creationDate, String updateDate, ArrayList<Dish> dishes) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
         this.dishes = new ArrayList<Dish>();
@@ -28,12 +28,12 @@ public class Menu {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getUser() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(String userId) {
+        this.userId = userId;
     }
 
     public String getCreationDate() {
@@ -72,7 +72,7 @@ public class Menu {
     public String toString() {
         return "Menu{" +
                 "id='" + id + '\'' +
-                ", user=" + user +
+                ", userId=" + userId +
                 ", creationDate='" + creationDate + '\'' +
                 ", updateDate='" + updateDate + '\'' +
                 ", dishes=" + dishes +

@@ -22,12 +22,12 @@ public class MenuService {
         return menu == null ? null : gson.toJson(menu);
     }
 
-    public boolean addMenu(String name, String description, double price) {
-        return menuRepo.addMenu(name);
+    public boolean addMenu(String userId, String description, double price) {
+        return menuRepo.addMenu(userId);
     }
 
-    public boolean updateMenu(String id, String name, String description, double price) {
-        return menuRepo.updateMenu(id, name, description, price);
+    public boolean updateMenu(String id, String userId, String description, double price) {
+        return menuRepo.updateMenu(id, userId, description, price);
     }
 
     public boolean deleteMenu(String id) {
