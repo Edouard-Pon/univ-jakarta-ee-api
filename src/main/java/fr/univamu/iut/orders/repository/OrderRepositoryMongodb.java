@@ -9,6 +9,7 @@ import fr.univamu.iut.orders.model.Order;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class OrderRepositoryMongodb implements OrderRepositoryInterface {
 
     @Override
     public Order getOrder(String id) {
-        Document doc = collection.find(new Document("_id", id)).first();
+        Document doc = collection.find(new Document("_id", new ObjectId(id))).first();
         return doc == null ? null : orderFromDocument(doc);
     }
 
