@@ -89,11 +89,16 @@ public class MenuRepositoryMongodb implements MenuRepositoryInterface {
         Map<Integer, Dish> dishes = new HashMap<>();
 
         DishRepositoryAPI dishRepo = new DishRepositoryAPI("http://localhost:8080/univ-jakarta-ee-api-1.0-SNAPSHOT/api"); // TODO - replace with the correct URL
+        UserRepositoryAPI userRepo = new UserRepositoryAPI("http://localhost:8080/univ-jakarta-ee-api-1.0-SNAPSHOT/api"); // TODO - replace with the correct URL
+
+        String username = userRepo.getUsernameById(doc.getObjectId("userId").toString());
 
         for (Document dishDoc : dishDocs) {
             String dishId = dishDoc.getObjectId("dishId").toString();
             Dish dish = dishRepo.getDish(dishId);
             int quantity = dishDoc.getInteger("quantity");
+
+            dish.setQuantity(quantity);
 
             dishes.put(quantity, dish);
         }
@@ -101,6 +106,7 @@ public class MenuRepositoryMongodb implements MenuRepositoryInterface {
         return new Menu(
                 doc.getObjectId("_id").toString(),
                 doc.getObjectId("userId").toString(),
+                username,
                 doc.getString("creationDate"),
                 doc.getString("updateDate"),
                 dishes
