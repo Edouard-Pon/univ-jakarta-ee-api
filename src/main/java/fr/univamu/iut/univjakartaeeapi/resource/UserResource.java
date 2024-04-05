@@ -41,6 +41,16 @@ public class UserResource {
         return result;
     }
 
+    @GET
+    @NoJWTFilter
+    @Path("{id}/username")
+    @Produces("application/json")
+    public String getUsernameById(@PathParam("id") String id){
+        String result = service.getUsernameByIdJSON(id);
+        if (result == null) throw new NotFoundException();
+        return result;
+    }
+
     @POST
     @NoJWTFilter
     @Consumes("application/x-www-form-urlencoded")

@@ -11,6 +11,8 @@ public interface UserRepositoryInterface {
 
     public User getUser(String username, String password);
 
+    public String getUsernameById(String id);
+
     public ArrayList<User> getAllUsers();
 
     public boolean addUser(String username, String password);

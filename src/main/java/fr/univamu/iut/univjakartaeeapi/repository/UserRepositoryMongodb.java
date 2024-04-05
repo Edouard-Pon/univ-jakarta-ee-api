@@ -47,6 +47,12 @@ public class UserRepositoryMongodb implements UserRepositoryInterface {
     }
 
     @Override
+    public String getUsernameById(String id) {
+        Document doc = collection.find(Filters.eq("_id", new ObjectId(id))).first();
+        return doc == null ? null : doc.getString("username");
+    }
+
+    @Override
     public ArrayList<User> getAllUsers() {
         List<Document> docs = collection.find().into(new ArrayList<>());
         ArrayList<User> users = new ArrayList<>();
