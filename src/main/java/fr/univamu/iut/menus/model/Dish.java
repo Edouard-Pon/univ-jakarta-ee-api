@@ -6,6 +6,8 @@ public class Dish {
     protected String description;
     protected double price;
 
+    protected int quantity;
+
     public Dish() {}
 
     public Dish(String id, String name, String description, double price) {
@@ -21,6 +23,14 @@ public class Dish {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -54,6 +64,7 @@ public class Dish {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", quantity=" + quantity +
                 '}';
     }
 }

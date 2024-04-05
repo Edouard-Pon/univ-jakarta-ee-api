@@ -7,15 +7,17 @@ import java.util.Map;
 public class Menu {
     protected String id;
     protected String userId;
+    protected String username;
     protected String creationDate;
     protected String updateDate;
-    protected Map<Integer, Dish> dishes;
+    protected Map<Integer, Dish> dishes; // TODO - replace with ArrayList
 
     public Menu() {}
 
-    public Menu(String id, String userId, String creationDate, String updateDate, Map<Integer, Dish> dishes) {
+    public Menu(String id, String userId, String username, String creationDate, String updateDate, Map<Integer, Dish> dishes) {
         this.id = id;
         this.userId = userId;
+        this.username = username;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
         this.dishes = dishes;
@@ -35,6 +37,14 @@ public class Menu {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getCreationDate() {
@@ -66,6 +76,7 @@ public class Menu {
         return "Menu{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", updateDate='" + updateDate + '\'' +
                 ", dishes=" + dishes +
