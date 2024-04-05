@@ -9,11 +9,11 @@ public class Menu {
     protected String userId;
     protected String creationDate;
     protected String updateDate;
-    protected ArrayList<Map<String, Object>> dishes;
+    protected Map<Integer, Dish> dishes;
 
     public Menu() {}
 
-    public Menu(String id, String userId, String creationDate, String updateDate, ArrayList<Map<String, Object>> dishes) {
+    public Menu(String id, String userId, String creationDate, String updateDate, Map<Integer, Dish> dishes) {
         this.id = id;
         this.userId = userId;
         this.creationDate = creationDate;
@@ -29,11 +29,11 @@ public class Menu {
         this.id = id;
     }
 
-    public String getUser() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUser(String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -53,26 +53,19 @@ public class Menu {
         this.updateDate = updateDate;
     }
 
-    public ArrayList<Map<String, Object>> getDishes() {
+    public Map<Integer, Dish> getDishes() {
         return dishes;
     }
 
-    public void setDishes(ArrayList<Map<String, Object>> dishes) {
+    public void setDishes(Map<Integer, Dish> dishes) {
         this.dishes = dishes;
-    }
-
-    public void addDish(Dish dish, int quantity) {
-
-    }
-
-    public void removeDish(Dish dish) {
     }
 
     @Override
     public String toString() {
         return "Menu{" +
                 "id='" + id + '\'' +
-                ", userId=" + userId +
+                ", userId='" + userId + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", updateDate='" + updateDate + '\'' +
                 ", dishes=" + dishes +
