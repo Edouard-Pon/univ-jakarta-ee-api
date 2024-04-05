@@ -80,34 +80,24 @@ public class MenuRepositoryMongodb implements MenuRepositoryInterface {
     }
 
     private Menu menuFromDocument(Document doc) {
-        // Get the list of Dish documents from the document
         List<Document> dishDocs = (List<Document>) doc.get("dishes");
 
-        // Check if dishDocs is null and initialize it to an empty list if it is
         if (dishDocs == null) {
             dishDocs = new ArrayList<>();
         }
 
-        // Create a new list to hold the Dish objects
-        ArrayList<Map<String, Object>> dishes = new ArrayList<>();
+        Map<Integer, Dish> dishes = new HashMap<>();
 
-        // Convert each Dish document into a Map and add it to the list
+        DishRepositoryAPI dishRepo = new DishRepositoryAPI("http://localhost:8080/univ-jakarta-ee-api-1.0-SNAPSHOT/api"); // TODO - replace with the correct URL
+
         for (Document dishDoc : dishDocs) {
-            Map<String, Object> dish = new HashMap<>();
-            String dishId = dishDoc.getObjectId("_id").toString();
-            Integer quantity = dishDoc.getInteger("quantity");
+            String dishId = dishDoc.getObjectId("dishId").toString();
+            Dish dish = dishRepo.getDish(dishId);
+            int quantity = dishDoc.getInteger("quantity");
 
-            // Call the second API to get the full dish data by dishId
-//            Dish fullDishData = getDishById(dishId);
-            Dish fullDishData = null;
-
-            // Add the full dish data and quantity to the dish map
-            dish.put("dishData", fullDishData);
-            dish.put("quantity", quantity);
-            dishes.add(dish);
+            dishes.put(quantity, dish);
         }
 
-        // Create a new Menu object using the converted dishes
         return new Menu(
                 doc.getObjectId("_id").toString(),
                 doc.getObjectId("userId").toString(),
